@@ -1,0 +1,13 @@
+{
+  "name": "casperjs-scraper",
+  "version": "0.0.1",
+
+  "dependencies": {
+    "phantomjs": "1.9.17",
+    "casperjs": "1.1.0-beta3",
+
+    "moment": "2.10.3"
+  },
+
+  "private": true
+}
