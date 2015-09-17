@@ -24,6 +24,9 @@ to install dependencies.
 `casperjs --ignore-ssl-errors=true scrapers/scraper.js [parameters]`
 
 
+*Example:* `casperjs --ignore-ssl-errors=true scrapers/autoria.js BMW 2009 2011 11000 25000`
+
+
 ## Additional Information 
 
 *[--ignore-ssl-errors parameter is used because of SSL handshake problem](https://newspaint.wordpress.com/2013/04/25/getting-to-the-bottom-of-why-a-phantomjs-page-load-fails/)*

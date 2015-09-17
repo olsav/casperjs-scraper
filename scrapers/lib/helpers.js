@@ -16,6 +16,9 @@ module.exports = {
     casper.captureSelector(this.getCurrentScrapeDir() + '/page' + this.pageCnt + '.png', 'html');
     this.pageCnt++;
   },
+  savePage: function(html) {
+    this.saveToFile(this.getCurrentScrapeDir() + '/page' + this.pageCnt + '.html', html);
+  },
   saveToFile: function(path, string) {
     try {
       var fs = require('fs');
