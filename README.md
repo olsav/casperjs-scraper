@@ -49,7 +49,7 @@ PhantomJS SSL bugs:
 ## Directory Layout
 
 ```
-scrapers/     -->  CasperJS scrapers
+scrapers/      -->  CasperJS scrapers
 logs/          --> Scrape results and logs directory
-node_modules/ --> NodeJS third party dependencies
+node_modules/  --> NodeJS third party dependencies
 ```
