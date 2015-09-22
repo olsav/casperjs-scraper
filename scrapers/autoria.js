@@ -21,29 +21,33 @@ var casper = require('casper').create({
         viewportSize: {
             width: 1024,
             height: 1600
-        },
-        verbose: true,
-        logLevel: 'debug'
+        }
+        //verbose: true,
+        //logLevel: 'debug'
     }),
     xpath = require('casper').selectXPath,
     helpers = require('lib/helpers.js'),
     moment = require('../node_modules/moment');
 
-casper.on('error', function(msg,backtrace) {
-    this.echo("=========================");
-    this.echo("ERROR:");
-    this.echo(msg);
-    this.echo(backtrace);
-    this.echo("=========================");
-});
-
-casper.on("page.error", function(msg, backtrace) {
-    this.echo("=========================");
-    this.echo("PAGE.ERROR:");
-    this.echo(msg);
-    this.echo(backtrace);
-    this.echo("=========================");
-});
+//casper.on('error', function(msg,backtrace) {
+//    this.echo("=========================");
+//    this.echo("ERROR:");
+//    this.echo(msg);
+//    this.echo(backtrace);
+//    this.echo("=========================");
+//});
+//
+//casper.on("page.error", function(msg, backtrace) {
+//    this.echo("=========================");
+//    this.echo("PAGE.ERROR:");
+//    this.echo(msg);
+//    this.echo(backtrace);
+//    this.echo("=========================");
+//});
+//
+//casper.on('remote.message', function(msg) {
+//    this.echo('remote message caught: ' + msg);
+//});
 
 //Casper bind fix http://stackoverflow.com/questions/25359247/casperjs-bind-issue
 casper.on( 'page.initialized', function(){
@@ -95,11 +99,15 @@ casper.start(userData.base_uri).then(function() {
 
 casper.then(function() {
     this.wait(4000, function() {
-        this.evaluate(function() {
+        this.evaluate(function(brand, year, yearTo) {
             //TODO fix userData here
-            $("#marks > option:contains('" + userData.brand + "'):first").attr("selected", "selected");
-            if (userData.year) $("#year > option:contains('" + userData.year + "'):first").attr("selected", "selected");
-            if (userData.yearTo) $("#yearTo > option:contains('" + userData.yearTo + "'):first").attr("selected", "selected");
+            $("#marks > option:contains('" + brand + "'):first").attr("selected", "selected");
+            if (year) $("#year > option:contains('" + year + "'):first").attr("selected", "selected");
+            if (yearTo) $("#yearTo > option:contains('" + yearTo + "'):first").attr("selected", "selected");
+        }, {
+            brand: userData.brand,
+            year: userData.year,
+            yearTo: userData.yearTo
         });
         if (userData.price) this.sendKeys("#priceFrom", userData.price, {reset: true});
         if (userData.priceTo) this.sendKeys("#priceTo", userData.priceTo, {reset: true});
@@ -107,16 +115,54 @@ casper.then(function() {
     });
 });
 
-//casper.waitForSelector(xpath('//a[contains(text(), "Цена от max к min")]'), function() {
-//    this.click(xpath('//a[contains(text(), "Цена от max к min")]'));
-//}, function(){
-//    this.echo('Could not wait for sort element');
+//casper.waitForSelector(xpath("//div[@id='pagination']//a[@data-value='100']"), function() {
+//    this.click(xpath("//div[@id='pagination']//a[@data-value='100']"));
+//}, function() {
+//    this.echo('Could not find search results page');
 //    this.exit( 1 );
 //}, 10000);
 
+//casper.waitForSelector(".standart-view > #pagination", function() {
+//    console.info("WAITED ");
+//    this.echo(this.fetchText(".standart-view > #pagination .pagination-wrap a.pager-item:last"));
+//    //pages count
+//    var pages = this.evaluate(function() {
+//        console.log($(".standart-view > #pagination .pagination-wrap a.pager-item:last").text());
+//        return $(".standart-view > #pagination .pagination-wrap a.pager-item:last").text();
+//    });
+//    console.info("PAGES COUNT " + pages);
+//}, function() {
+//    this.echo('Could not find paginator');
+//    this.exit( 1 );
+//}, 30000);
+
 casper.then(function() {
-    this.wait(4000, function() {
+    this.wait(12000, function() {
         this.echo("SEARCH RESULTS PAGE");
+
+        var items = this.evaluate(function() {
+            var result = [];
+            $(".standart-view .ticket-item").each(function(i, item) {
+                result.push({
+                    title: $(item).find(".content-bar .address strong").text(),
+                    link: $(item).find(".content-bar .address").attr('href'),
+                    year: $(item).find(".content-bar .address").contents()
+                        .filter(function() {
+                            return this.nodeType == Node.TEXT_NODE;
+                        }).text(),
+                    price: $(item).find(".price-ticket strong.green").text(),
+                    phone: $(item).find(".content-bar .footer-ticket .js-phone").text(),
+                    image: $(item).find(".content-bar .ticket-photo img").attr('src'),
+                    location: $(item).find(".location a").text()
+                });
+            });
+
+            return result;
+        });
+        console.info(JSON.stringify(items));
+        //this.each(items, function(casper, item, i) {
+        //    console.info(item);
+        //});
         helpers.capturePage(casper);
     });
 });
