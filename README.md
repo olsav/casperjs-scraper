@@ -17,7 +17,9 @@ cd to project root then run
 npm install
 ```
 
-to install dependencies.
+```grunt connect```
+
+```casperjs --ignore-ssl-errors=true scrapers/autoria.js BMW 2009 2011 11000 25000```
 
 ## Running Scrapers
 
@@ -26,6 +28,12 @@ to install dependencies.
 
 *Example:* `casperjs --ignore-ssl-errors=true scrapers/autoria.js BMW 2009 2011 11000 25000`
 
+
+## Grunt
+
+Grunt needed to run webpage with charts
+
+```grunt connect```
 
 ## Additional Information 
 
@@ -52,7 +60,8 @@ PhantomJS SSL bugs:
 ## Directory Layout
 
 ```
-scrapers/      -->  CasperJS scrapers
+scrapers/      --> CasperJS scrapers
+public/        --> Output directory
 logs/          --> Scrape results and logs directory
 node_modules/  --> NodeJS third party dependencies
 ```

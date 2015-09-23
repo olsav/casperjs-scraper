@@ -17,9 +17,9 @@ module.exports = {
     this.pageCnt++;
   },
   savePage: function(html) {
-    this.saveToFile(this.getCurrentScrapeDir() + '/page' + this.pageCnt + '.html', html);
+    this.saveFile(this.getCurrentScrapeDir() + '/page' + this.pageCnt + '.html', html);
   },
-  saveToFile: function(path, string) {
+  saveFile: function(path, string) {
     try {
       var fs = require('fs');
       fs.write(path, string, 'w');

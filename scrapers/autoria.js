@@ -29,26 +29,6 @@ var casper = require('casper').create({
     helpers = require('lib/helpers.js'),
     moment = require('../node_modules/moment');
 
-//casper.on('error', function(msg,backtrace) {
-//    this.echo("=========================");
-//    this.echo("ERROR:");
-//    this.echo(msg);
-//    this.echo(backtrace);
-//    this.echo("=========================");
-//});
-//
-//casper.on("page.error", function(msg, backtrace) {
-//    this.echo("=========================");
-//    this.echo("PAGE.ERROR:");
-//    this.echo(msg);
-//    this.echo(backtrace);
-//    this.echo("=========================");
-//});
-//
-//casper.on('remote.message', function(msg) {
-//    this.echo('remote message caught: ' + msg);
-//});
-
 //Casper bind fix http://stackoverflow.com/questions/25359247/casperjs-bind-issue
 casper.on( 'page.initialized', function(){
     this.evaluate(function(){
@@ -115,12 +95,12 @@ casper.then(function() {
     });
 });
 
-//casper.waitForSelector(xpath("//div[@id='pagination']//a[@data-value='100']"), function() {
-//    this.click(xpath("//div[@id='pagination']//a[@data-value='100']"));
-//}, function() {
-//    this.echo('Could not find search results page');
-//    this.exit( 1 );
-//}, 10000);
+casper.waitForSelector(xpath("//div[@id='pagination']//a[@data-value='100']"), function() {
+    this.click(xpath("//div[@id='pagination']//a[@data-value='100']"));
+}, function() {
+    this.echo('Could not find search results page');
+    this.exit( 1 );
+}, 10000);
 
 //casper.waitForSelector(".standart-view > #pagination", function() {
 //    console.info("WAITED ");
@@ -160,9 +140,7 @@ casper.then(function() {
             return result;
         });
         console.info(JSON.stringify(items));
-        //this.each(items, function(casper, item, i) {
-        //    console.info(item);
-        //});
+        helpers.saveFile("public/data.json", JSON.stringify(items));
         helpers.capturePage(casper);
     });
 });
