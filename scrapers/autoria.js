@@ -1,7 +1,7 @@
 var system = require('system');
 
 // TODO improve flags from CLI
-if (system.args.length < 5) {
+if (system.args.length < 6) {
     console.info("You need to pass in brand name, from year YYYY [and optionally to year YYYY and from price to price]");
     phantom.exit( 1 );
 }
